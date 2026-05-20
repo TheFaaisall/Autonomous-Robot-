@@ -14,7 +14,7 @@ This repository contains the Arduino firmware for an autonomous robot built for 
 
 The robot integrates three mechanical subsystems: a gripper, a linear conveyor, and a rotational arm. All three are coordinated by a sensor-driven finite state machine written in C on Arduino. The robot completes the full mission autonomously from the moment the start button is pressed.
 
-Note: the code in this repository was rewritten by me after the competition. The firmware used on competition day was developed collaboratively with the team under time pressure. This version is a clean, structured rewrite that reflects the same logic and hardware behaviour with improved modularity, documentation, and fault handling.
+Note: the code in this repository was rewritten completely from scratch by me after the competition. The firmware used on competition day was developed collaboratively with the team under time pressure. This version is a clean, structured rewrite that reflects the same logic and hardware behaviour with improved modularity, documentation, and fault handling.
 
 ---
 
