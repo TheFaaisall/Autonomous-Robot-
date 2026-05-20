@@ -1,10 +1,10 @@
-# Autonomous Robot
+# Warman Design and Build Competition — Autonomous Robot Firmware
 
-Robotics and Mechatronics Engineering
+Monash University | Robotics and Mechatronics Engineering
 
 ---
 
-![Robot at competition](robotfront.png)
+<img src="pickpayload.png" width="750"/>
 
 ---
 
@@ -20,7 +20,7 @@ Note: the code in this repository was rewritten by me after the competition. The
 
 ## Competition Task
 
-![Competition zone layout](cadtop.png)
+<img src="cadtop.png" width="500"/>
 
 The robot operated on a fixed platform. The task required:
 
@@ -35,7 +35,7 @@ All steps had to be completed autonomously within 120 seconds from the start sig
 
 ## Design
 
-![SolidWorks CAD model](fullcad.png)
+<img src="fullcad.png" width="550"/>
 
 The robot was designed in SolidWorks before fabrication. The chassis uses an acrylic and aluminium frame. The key mechanical feature is a novel rotational mechanism that allows the arm to swing between Zone A and Zone D, reducing linear travel distance and improving cycle time. The conveyor uses a wire rope and pulley system driven by a DC motor to move the carriage along an aluminium linear rail.
 
@@ -43,7 +43,7 @@ The robot was designed in SolidWorks before fabrication. The chassis uses an acr
 
 ## Hardware
 
-![Top-down view showing full electronics and chassis assembly](imagetop.png)
+<img src="imagetop.png" width="650"/>
 
 ### Components
 
@@ -62,15 +62,15 @@ The robot was designed in SolidWorks before fabrication. The chassis uses an acr
 
 ## Payload Pickup Sequence
 
-The three images below show the arm movement from approach to secured grip.
+The sequence below shows the arm moving from approach to secured grip, followed by the robot on competition day with the payload held at Zone D.
 
-![Arm approaching the payload](image3.png)
+| Approaching payload | Gripper open | Gripper closed |
+|:---:|:---:|:---:|
+| <img src="image3.png" width="230"/> | <img src="image2.png" width="230"/> | <img src="image1.png" width="230"/> |
 
-![Gripper open and aligned over payload](image2.png)
+<img src="pickpayload.png" width="750"/>
 
-![Gripper closed, payload secured](image1.png)
-
-The gripper arms are 3D-printed and driven by a servo motor. The IR sensor inside the gripper confirms payload contact before the state machine advances. If contact is not confirmed after closing, the firmware reopens the gripper and retries rather than continuing with an empty grip.
+Payload secured and conveyor arm extended to Zone D on competition day. The IR sensor inside the gripper confirms contact before the state machine advances to the transport phase. If contact is not confirmed after closing, the firmware reopens the gripper and retries rather than continuing with an empty grip.
 
 ---
 
