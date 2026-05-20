@@ -1,10 +1,11 @@
 # Warman Design and Build Competition — Autonomous Robot Firmware
 
-Monash University | Mechanical and Mechatronics Engineering
+Monash University | Robotics and Mechatronics Engineering
+Result: 87% task completion, top 10 of 22 competing teams
 
 ---
 
-![Robot on competition table](image_6_placeholder.jpg)
+![Robot at competition](robotfront.png)
 
 ---
 
@@ -12,7 +13,7 @@ Monash University | Mechanical and Mechatronics Engineering
 
 This repository contains the Arduino firmware for an autonomous robot built for the Warman Design and Build Competition. The robot's task was to pick up a payload from Zone A, transport it to Zone D, release it, and return to the starting position within 120 seconds.
 
-The robot integrates three mechanical subsystems (gripper, conveyor, and launcher arm) controlled by a sensor-driven embedded firmware written in C on Arduino. A finite state machine coordinates all actuators and sensors through the full mission sequence autonomously.
+The robot integrates three mechanical subsystems: a gripper, a linear conveyor, and a rotational arm. All three are coordinated by a sensor-driven finite state machine written in C on Arduino. The robot completes the full mission autonomously from the moment the start button is pressed.
 
 Note: the code in this repository was rewritten by me after the competition. The firmware used on competition day was developed collaboratively with the team under time pressure. This version is a clean, structured rewrite that reflects the same logic and hardware behaviour with improved modularity, documentation, and fault handling.
 
@@ -20,12 +21,12 @@ Note: the code in this repository was rewritten by me after the competition. The
 
 ## Competition Task
 
-![Competition zone layout and robot positioning](imagetop.png)
+![Competition zone layout](cadtop.png)
 
 The robot operated on a fixed platform. The task required:
 
-1. Gripping a payload placed in Zone A
-2. Transporting the payload from Zone A to Zone D via a linear conveyor and rotational arm
+1. Gripping a payload placed at Zone A
+2. Transporting it to Zone D via the linear conveyor and rotational arm
 3. Releasing the payload at Zone D
 4. Returning all axes to the starting position
 
@@ -33,42 +34,50 @@ All steps had to be completed autonomously within 120 seconds from the start sig
 
 ---
 
+## Design
+
+![SolidWorks CAD model](fullcad.png)
+
+The robot was designed in SolidWorks before fabrication. The chassis uses an acrylic and aluminium frame. The key mechanical feature is a novel rotational mechanism that allows the arm to swing between Zone A and Zone D, reducing linear travel distance and improving cycle time. The conveyor uses a wire rope and pulley system driven by a DC motor to move the carriage along an aluminium linear rail.
+
+---
+
 ## Hardware
 
-### Design
-
-![SolidWorks CAD model of the robot](fullcad.png)
-
-The robot was designed in SolidWorks before fabrication. The chassis uses an acrylic and aluminium frame. The key mechanical feature is a novel rotational mechanism that allows the arm to swing between Zone A and Zone D, reducing linear travel and improving cycle time.
-
-### Physical Build
-
-![Top-down view showing full assembly and gripper holding payload](image_1_placeholder.jpg)
-
-![Top-down view showing gripper open position](image_2_placeholder.jpg)
-
-![Top-down view showing internal electronics and wiring](image_3_placeholder.jpg)
-
-![Alternate angle showing underside and motor mounting](image_4_placeholder.jpg)
+![Top-down view showing full electronics and chassis assembly](imagetop.png)
 
 ### Components
 
 - Arduino Mega 2560 microcontroller
-- DC motor with L298N H-bridge driver (conveyor linear drive via wire rope and pulleys)
-- Stepper motor with A4988 or DRV8825 driver (rotational arm mechanism)
-- Servo motor (gripper open and close)
-- HC-SR04 ultrasonic sensor (distance feedback)
-- Limit switches at Zone A and Zone D (end-stop detection via hardware interrupts)
-- IR sensor (payload presence detection in gripper)
+- DC motor with L298N H-bridge driver — conveyor linear drive via wire rope and pulleys
+- Stepper motor with A4988 or DRV8825 driver — rotational arm mechanism
+- Servo motor — gripper open and close
+- HC-SR04 ultrasonic sensor — distance feedback
+- Limit switches at Zone A and Zone D — end-stop detection via hardware interrupts
+- IR sensor — payload presence detection inside gripper
 - 3D-printed gripper arms and structural brackets
-- Aluminium linear rail extrusion (conveyor carriage track)
-- Steel wire rope and pulleys (conveyor drive transmission)
+- Aluminium linear rail extrusion — conveyor carriage track
+- Steel wire rope and pulleys — conveyor drive transmission
+
+---
+
+## Payload Pickup Sequence
+
+The three images below show the arm movement from approach to secured grip.
+
+![Arm approaching the payload](image3.png)
+
+![Gripper open and aligned over payload](image2.png)
+
+![Gripper closed, payload secured](image1.png)
+
+The gripper arms are 3D-printed and driven by a servo motor. The IR sensor inside the gripper confirms payload contact before the state machine advances. If contact is not confirmed after closing, the firmware reopens the gripper and retries rather than continuing with an empty grip.
 
 ---
 
 ## Firmware Architecture
 
-The firmware is split across 12 files. Each file has one responsibility. All files must be placed in the same Arduino sketch folder.
+The firmware is split across 12 files. Each file has one responsibility. All files must be placed in the same Arduino sketch folder to compile correctly.
 
 ```
 warman_robot/
@@ -127,22 +136,22 @@ COMPLETE
   |-- LED blinks, elapsed time logged, system holds
 
 Any state --> FAULT on hardware timeout
-Any active state --> RETURN_TO_A if mission exceeds 110 seconds
+Any active state --> RETURN_TO_A if mission clock exceeds 110 seconds
 ```
 
-The 110-second abort threshold (not 120) is intentional. It reserves 10 seconds for the return journey regardless of where in the sequence the robot is when the clock runs low.
+The abort threshold is 110 seconds, not 120. This reserves 10 seconds for the return journey regardless of where in the sequence the robot is when the clock runs low.
 
 ---
 
 ## Configuration
 
-All tunable parameters are in config.h. Change pin numbers there if your wiring differs. Key values to tune for your hardware:
+All tunable parameters are in config.h. Key values to adjust for your hardware:
 
 ```c
-ARM_ZONE_D_STEPS     // steps from Zone A to Zone D on the rotational arm
-CONV_SPEED_FWD       // PWM speed for conveyor (0-255)
-IR_PAYLOAD_THRESHOLD // analog threshold for IR payload detection
-GRIPPER_CLOSED_DEG   // servo angle for closed gripper position
+ARM_ZONE_D_STEPS       // steps from Zone A to Zone D on the rotational arm
+CONV_SPEED_FWD         // PWM speed for conveyor (0-255)
+IR_PAYLOAD_THRESHOLD   // analog threshold for IR payload detection
+GRIPPER_CLOSED_DEG     // servo angle for closed gripper position
 ```
 
 Set TEST_MODE to 1 in config.h to enable Serial debug output at 115200 baud. Set to 0 for competition to remove all Serial overhead.
@@ -155,13 +164,13 @@ Set TEST_MODE to 1 in config.h to enable Serial debug output at 115200 baud. Set
    - AccelStepper by Mike McCauley
    - Servo (built-in to Arduino IDE)
 
-2. Open warman_robot.ino in Arduino IDE. All other files in the folder are compiled automatically.
+2. Open warman_robot.ino in Arduino IDE. All other files in the folder compile automatically.
 
-3. Select board: Arduino Mega 2560
+3. Select board: Arduino Mega 2560.
 
-4. Set your pin numbers in config.h to match your wiring.
+4. Update pin numbers in config.h to match your wiring.
 
-5. Set TEST_MODE 1, upload, and open Serial Monitor at 115200 baud to verify each subsystem before competition.
+5. Set TEST_MODE 1, upload, and open Serial Monitor at 115200 baud to verify each subsystem individually before running a full mission.
 
 6. Set TEST_MODE 0 before final upload for competition day.
 
@@ -170,7 +179,7 @@ Set TEST_MODE to 1 in config.h to enable Serial debug output at 115200 baud. Set
 ## Skills Demonstrated
 
 - Embedded firmware development in C on Arduino Mega
-- Finite state machine design for autonomous sequencing
+- Finite state machine design for autonomous mission sequencing
 - Multi-axis actuator coordination across DC motor, stepper motor, and servo
 - Hardware interrupt-driven sensor integration
 - Modular firmware architecture across 12 files with clean dependency structure
