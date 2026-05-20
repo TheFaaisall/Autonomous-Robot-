@@ -48,15 +48,15 @@ The robot was designed in SolidWorks before fabrication. The chassis uses an acr
 ### Components
 
 - Arduino Mega 2560 microcontroller
-- DC motor with L298N H-bridge driver — conveyor linear drive via wire rope and pulleys
-- Stepper motor with A4988 or DRV8825 driver — rotational arm mechanism
-- Servo motor — gripper open and close
-- HC-SR04 ultrasonic sensor — distance feedback
-- Limit switches at Zone A and Zone D — end-stop detection via hardware interrupts
-- IR sensor — payload presence detection inside gripper
+- DC motor with L298N H-bridge driver - conveyor linear drive via wire rope and pulleys
+- Stepper motor with A4988 or DRV8825 driver - rotational arm mechanism
+- Servo motor - gripper open and close
+- HC-SR04 ultrasonic sensor - distance feedback
+- Limit switches at Zone A and Zone D - end-stop detection via hardware interrupts
+- IR sensor - payload presence detection inside gripper
 - 3D-printed gripper arms and structural brackets
-- Aluminium linear rail extrusion — conveyor carriage track
-- Steel wire rope and pulleys — conveyor drive transmission
+- Aluminium linear rail extrusion - conveyor carriage track
+- Steel wire rope and pulleys - conveyor drive transmission
 
 ---
 
