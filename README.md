@@ -1,7 +1,6 @@
 # Warman Design and Build Competition — Autonomous Robot Firmware
 
 Monash University | Robotics and Mechatronics Engineering
-Result: 87% task completion, top 10 of 22 competing teams
 
 ---
 
