@@ -1,4 +1,4 @@
-# Warman Design and Build Competition — Autonomous Robot Firmware
+# Autonomous Robot Firmware
 
 Monash University | Robotics and Mechatronics Engineering
 
